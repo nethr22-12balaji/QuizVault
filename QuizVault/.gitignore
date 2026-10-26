@@ -1,0 +1,6 @@
+bin/
+out/
+*.dat
+users.csv
+webroot/certs/
+.DS_Store

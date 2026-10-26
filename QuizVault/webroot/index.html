@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizVault</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="main-header" style="display:none">
+        <div class="logo">QuizVault</div>
+        <div style="display:flex; align-items:center; gap: 15px;">
+            <span id="logged-in-user" style="font-weight:bold; color:var(--text-muted)"></span>
+            <button class="btn-small" onclick="navBack()">Dashboard</button>
+            <button class="btn-small btn-danger" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <div id="msg-banner"></div>
+
+    <!-- LOGIN / REGISTER VIEW -->
+    <div id="login-view" class="view active">
+        <div class="card" style="max-width:400px; margin: 100px auto; text-align:center;">
+            <div class="logo" style="margin-bottom:20px; font-size:2rem;">QuizVault</div>
+            <h2 id="auth-title">Login</h2>
+            <div id="login-error" style="margin-bottom:15px;"></div>
+            <div class="form-group"><input type="text" id="login-username" placeholder="Username" class="input-field"></div>
+            <div class="form-group"><input type="password" id="login-password" placeholder="Password" class="input-field"></div>
+            <div class="form-group">
+                <select id="login-role" class="input-field">
+                    <option value="Participant">Participant</option>
+                    <option value="Quizmaster">Quizmaster</option>
+                </select>
+            </div>
+            <button id="auth-btn" class="btn-primary" onclick="authAction()">LOGIN</button>
+            <div style="margin-top:20px; font-weight:bold;">
+                <a href="#" id="auth-toggle" onclick="toggleAuth()" style="color:var(--blue); text-decoration:none;">Need an account? Register</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZMASTER DASHBOARD -->
+    <div id="quizmaster-dashboard-view" class="view">
+        <div class="card" style="max-width:700px; margin: 50px auto;">
+            <h2>Quizmaster Dashboard</h2>
+            <div class="subtitle">Welcome to the control center! What would you like to do?</div>
+            <div class="dashboard-grid">
+                <button class="card-btn" onclick="nav('question-bank-view')">
+                    <h3>Manage Question Bank</h3><p>Add/edit questions</p>
+                </button>
+                <button class="card-btn" onclick="nav('manage-teams-view')">
+                    <h3>Manage Teams</h3><p>View teams</p>
+                </button>
+                <button class="card-btn" onclick="nav('quiz-setup-view')">
+                    <h3>Start New Quiz</h3><p>Configure and launch</p>
+                </button>
+                <button class="card-btn" onclick="nav('live-quiz-qm-view')">
+                    <h3>Live Quiz View</h3><p>Monitor progress</p>
+                </button>
+                <button class="card-btn" onclick="nav('archives-view')">
+                    <h3>View Archives</h3><p>Past results</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARTICIPANT DASHBOARD -->
+    <div id="participant-dashboard-view" class="view">
+        <div class="card" style="max-width:700px; margin: 50px auto;">
+            <h2>Participant Dashboard</h2>
+            <div class="subtitle">Get ready to play!</div>
+            <div class="dashboard-grid">
+                <button class="card-btn" onclick="nav('manage-teams-view')">
+                    <h3>Join a Team</h3><p>Form your squad</p>
+                </button>
+                <button class="card-btn" onclick="nav('live-quiz-participant-view')">
+                    <h3>Join Active Quiz</h3><p>Enter the arena</p>
+                </button>
+                <button class="card-btn" onclick="nav('certificates-view')">
+                    <h3>My Certificates</h3><p>View achievements</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANAGE TEAMS VIEW -->
+    <div id="manage-teams-view" class="view">
+        <div class="card" style="max-width:600px; margin: 50px auto;">
+            <h2>Teams</h2>
+            <div style="display:flex; gap:10px; margin-bottom: 20px;">
+                <input type="text" id="team-new-name" placeholder="New Team Name" class="input-field" style="flex:1;">
+                <button class="btn-primary" style="flex:0 0 auto; width:auto;" onclick="createTeam()">Create Team</button>
+            </div>
+            <div id="teams-list" class="scroll-list"></div>
+        </div>
+    </div>
+
+    <!-- QUESTION BANK VIEW -->
+    <div id="question-bank-view" class="view">
+        <div class="card" style="max-width:800px; margin: 50px auto;">
+            <h2>Question Bank</h2>
+            <div class="qm-only card" style="padding:20px; margin-bottom:20px; border-color:var(--border-light);">
+                <h3>Add Question</h3>
+                <div id="qb-msg" style="margin-bottom:10px;"></div>
+                <div class="form-group"><input type="text" id="qb-q" placeholder="Question Text" class="input-field"></div>
+                <div class="form-group"><input type="text" id="qb-a" placeholder="Answer Text" class="input-field"></div>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <input type="text" id="qb-tags" placeholder="Tags (e.g. Science)" class="input-field" style="flex:1;">
+                    <select id="qb-diff" class="input-field" style="flex:0 0 150px;">
+                        <option value="Easy">Easy</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <button class="btn-primary" style="width:auto;" onclick="addQuestion()">Add to Bank</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="text" id="qb-search" placeholder="Search questions or tags..." class="input-field" onkeyup="fetchQuestions()">
+            </div>
+            <div id="qb-list" class="scroll-list"></div>
+        </div>
+    </div>
+
+    <!-- QUIZ SETUP VIEW -->
+    <div id="quiz-setup-view" class="view">
+        <div class="card" style="max-width:600px; margin: 50px auto;">
+            <h2>Start New Quiz</h2>
+            <div class="form-group">
+                <label>Event Name</label>
+                <input type="text" id="qs-name" placeholder="e.g. Tech Trivia 2026" class="input-field">
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="qs-date" class="input-field">
+            </div>
+            
+            <h3 style="margin-top:30px;">Questions Per Team</h3>
+            <div class="grid-3" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-bottom:20px;">
+                <div><label id="lbl-easy" style="color:var(--green)">Easy</label><input type="number" id="qs-easy" value="0" min="0" class="input-field"></div>
+                <div><label id="lbl-med" style="color:var(--orange)">Medium</label><input type="number" id="qs-medium" value="0" min="0" class="input-field"></div>
+                <div><label id="lbl-hard" style="color:var(--red)">Hard</label><input type="number" id="qs-hard" value="0" min="0" class="input-field"></div>
+            </div>
+            
+            <h3 style="margin-top:30px;">Select Teams</h3>
+            <ul id="qs-teams-list" class="checkbox-list scroll-list"></ul>
+            
+            <button class="btn-primary" onclick="startQuiz()" style="margin-top:30px;">START QUIZ</button>
+        </div>
+    </div>
+
+    <!-- LIVE QUIZ (QM) -->
+    <div id="live-quiz-qm-view" class="view">
+        <div style="max-width:1100px; margin: 20px auto; padding:0 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+                <h2 id="live-qm-eventname" style="margin:0; color:var(--green);">Live Quiz Dashboard</h2>
+                <div style="display:flex;gap:10px;">
+                    <button class="btn-secondary" onclick="api('quiz/skip')">Skip for All</button>
+                    <button class="btn-danger" onclick="finishQuiz()">Finish Quiz</button>
+                </div>
+            </div>
+            
+            <div class="two-col" style="display:grid; grid-template-columns: 2fr 1fr; gap:20px;">
+                <div>
+                    <h3>Teams Progress</h3>
+                    <div id="live-qm-qbox"></div>
+                </div>
+                <div>
+                    <div class="card" style="margin-bottom:20px; padding:15px;">
+                        <h3>Scoreboard</h3>
+                        <div class="scroll-list" style="max-height:200px; background:transparent; border:none;">
+                            <table style="width:100%; border-collapse:collapse;" id="live-qm-scores">
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card" style="padding:15px;">
+                        <h3>Event Log</h3>
+                        <pre id="live-qm-log" class="log-box" style="margin:0;"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE QUIZ (PARTICIPANT) -->
+    <div id="live-quiz-participant-view" class="view">
+        <div style="max-width:900px; margin: 30px auto; padding:0 20px;">
+            <div class="two-col" style="display:grid; grid-template-columns: 2fr 1fr; gap:20px;">
+                <div class="card" style="text-align:center; padding:40px 20px;">
+                    <h3 id="live-p-teamname" style="margin-bottom:20px; color:var(--blue); font-size:1.2rem;">Team Name</h3>
+                    <div id="live-p-qbox" class="q-box-large">
+                        Waiting for quiz to start...
+                    </div>
+                    <div class="buzz-area">
+                        <input type="text" id="live-p-answer" placeholder="Type your answer..." class="input-field" style="text-align:center; font-size:1.2rem;" disabled>
+                        <button class="btn-primary" style="width:auto; flex:0 0 auto;" id="live-p-submit" onclick="submitAnswer()">SUBMIT</button>
+                    </div>
+                    <div id="p-feedback" style="margin-top:20px; font-weight:bold; font-size:1.1rem;"></div>
+                </div>
+                
+                <div class="card">
+                    <h3>Live Scores</h3>
+                    <ul class="scroll-list checkbox-list" id="live-p-scores" style="background:transparent; border:none; max-height:400px; list-style:none;"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ARCHIVES VIEW -->
+    <div id="archives-view" class="view">
+        <div class="card" style="max-width:900px; margin: 50px auto;">
+            <h2>Archives</h2>
+            <div class="two-col" style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <div id="archives-list" class="scroll-list"></div>
+                <div id="archive-detail" class="q-box" style="background:var(--bg-card);">Select an archive to view details.</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CERTIFICATES VIEW -->
+    <div id="certificates-view" class="view">
+        <div class="card" style="max-width:600px; margin: 50px auto;">
+            <h2>My Certificates</h2>
+            <div id="certs-list" class="scroll-list"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

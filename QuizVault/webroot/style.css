@@ -1,0 +1,237 @@
+:root {
+    --bg: #131f24;
+    --bg-card: #1a2c35;
+    --bg-input: #0f1c22;
+    --green: #58cc02;
+    --green-dark: #46a302;
+    --green-light: #89e219;
+    --blue: #1cb0f6;
+    --blue-dark: #1899d6;
+    --orange: #ff9600;
+    --red: #ff4b4b;
+    --purple: #ce82ff;
+    --text: #ffffff;
+    --text-muted: #afafaf;
+    --border: #37464f;
+    --border-light: #4b5e69;
+    --btn-shadow: #3c5a3c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+#app { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+.view { display: none; }
+.view.active { display: block; animation: slideUp 0.3s ease; }
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 0; margin-bottom: 25px;
+    border-bottom: 2px solid var(--border);
+}
+.logo {
+    font-size: 1.6rem; font-weight: 800; color: var(--green);
+    letter-spacing: -0.5px;
+}
+
+/* Cards & Panels */
+.card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+/* Titles */
+h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.85rem; }
+.subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 1rem; }
+
+/* Forms */
+.form-group { margin-bottom: 16px; }
+label { display: block; margin-bottom: 6px; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.3px; }
+
+input, select {
+    width: 100%; padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--bg-input);
+    color: white; font-size: 1rem;
+    font-weight: 500;
+    transition: border-color 0.2s;
+}
+input:focus, select:focus { outline: none; border-color: var(--blue); }
+input::placeholder { color: #555; }
+
+/* Buttons */
+button {
+    cursor: pointer; border: none; border-radius: 12px;
+    font-weight: 700; font-size: 0.95rem;
+    transition: all 0.15s; font-family: inherit;
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: var(--green); color: white;
+    padding: 14px 24px; width: 100%;
+    font-size: 1rem;
+    border-bottom: 4px solid var(--green-dark);
+}
+.btn-primary:hover { background: var(--green-light); }
+.btn-primary:active { border-bottom-width: 2px; transform: translateY(2px); }
+
+.btn-secondary {
+    background: var(--blue); color: white;
+    padding: 10px 20px;
+    border-bottom: 3px solid var(--blue-dark);
+}
+
+.btn-danger {
+    background: var(--red); color: white;
+    padding: 10px 20px;
+    border-bottom: 3px solid #cc3c3c;
+}
+
+.btn-small {
+    padding: 8px 16px; font-size: 0.8rem;
+    background: var(--bg-input); color: var(--text-muted);
+    border: 2px solid var(--border);
+    text-transform: none; letter-spacing: 0;
+}
+.btn-small:hover { border-color: var(--blue); color: white; }
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px; margin-top: 16px;
+}
+
+.card-btn {
+    background: var(--bg-card); border: 2px solid var(--border);
+    padding: 24px 16px; border-radius: 16px;
+    text-align: center; color: white;
+    border-bottom: 4px solid var(--border);
+}
+.card-btn:hover { border-color: var(--green); transform: translateY(-2px); }
+.card-btn:active { border-bottom-width: 2px; transform: translateY(2px); }
+.card-btn h3 { color: var(--green); text-transform: none; font-size: 1rem; letter-spacing: 0; }
+.card-btn p { color: var(--text-muted); font-size: 0.85rem; font-weight: 400; margin-top: 6px; }
+
+/* Lists */
+.scroll-list {
+    max-height: 350px; overflow-y: auto;
+    background: var(--bg-input); border: 2px solid var(--border);
+    border-radius: 12px;
+}
+.scroll-list::-webkit-scrollbar { width: 6px; }
+.scroll-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.list-item {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.list-item:last-child { border-bottom: none; }
+
+/* Checkboxes for team selection */
+.checkbox-list { list-style: none; }
+.checkbox-list li {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer;
+}
+.checkbox-list li:hover { background: rgba(88, 204, 2, 0.1); }
+.checkbox-list li.selected { background: rgba(88, 204, 2, 0.15); border-left: 3px solid var(--green); }
+.checkbox-list input[type="checkbox"] {
+    width: 20px; height: 20px; accent-color: var(--green);
+}
+
+/* Quiz boxes */
+.q-box {
+    min-height: 120px; padding: 20px;
+    background: var(--bg-input); border: 2px solid var(--border);
+    border-radius: 12px; margin-bottom: 12px;
+    white-space: pre-wrap; font-size: 1rem; line-height: 1.6;
+}
+
+.q-box-large {
+    min-height: 100px; padding: 30px;
+    background: var(--bg-input);
+    border: 2px solid var(--green);
+    border-radius: 16px; margin-bottom: 16px;
+    font-size: 1.4rem; font-weight: 600; text-align: center;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.log-box {
+    min-height: 180px; max-height: 300px; padding: 16px;
+    background: var(--bg-input); border: 2px solid var(--border);
+    border-radius: 12px; font-family: monospace; font-size: 0.85rem;
+    color: var(--green-light); overflow-y: auto; white-space: pre-wrap;
+}
+
+/* Buzz area */
+.buzz-area { display: flex; gap: 10px; margin-top: 12px; }
+.btn-buzz {
+    flex: 1; background: var(--green); color: white;
+    font-size: 1.1rem; font-weight: 800; padding: 16px;
+    border-radius: 12px; border-bottom: 4px solid var(--green-dark);
+    text-transform: uppercase;
+}
+.btn-buzz:active { border-bottom-width: 2px; transform: translateY(2px); }
+
+/* Two column layout */
+.live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .live-grid { grid-template-columns: 1fr; } }
+
+.setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 700px) { .setup-grid { grid-template-columns: 1fr; } }
+
+/* Score list */
+.score-list { list-style: none; }
+.score-list li {
+    padding: 10px 16px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-weight: 600;
+}
+.score-list li .score-val { color: var(--green); font-weight: 800; }
+
+/* Scores table */
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 10px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; border-bottom: 2px solid var(--border); }
+td { padding: 10px; border-bottom: 1px solid var(--border); }
+
+/* Difficulty badges */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+.badge-easy { background: rgba(88,204,2,0.2); color: var(--green); }
+.badge-medium { background: rgba(255,150,0,0.2); color: var(--orange); }
+.badge-hard { background: rgba(255,75,75,0.2); color: var(--red); }
+
+.error-msg { color: var(--red); margin-top: 12px; font-weight: 600; text-align: center; }
+
+/* Certificate card */
+.cert-card {
+    background: var(--bg-input); border: 2px solid var(--border);
+    border-radius: 16px; padding: 20px; margin-bottom: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.cert-card .cert-info h4 { color: var(--text); margin-bottom: 4px; }
+.cert-card .cert-info p { color: var(--text-muted); font-size: 0.9rem; }
+.cert-badge { background: var(--green); color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
